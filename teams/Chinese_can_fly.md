@@ -24,22 +24,26 @@ Record completed games, maintain personal bests and rankings, save progress loca
 
 ## 3. Detailed Requirements
 
+The following are sub-requirements of **Project 3: Records & Achievements System**.
+
 | ID | Requirement |
 | --- | --- |
-| R1 | Save one record per completed run: unique run ID, score, enemies defeated, active play duration excluding pauses, and completion time. Ignore duplicate completion events. |
-| R2 | Track the highest score, most enemies defeated in one run, and longest survival time. Update only when a value exceeds the previous best. |
-| R3 | Show up to ten completed runs by descending score. Break ties by earlier completion time, then run ID. Show an empty state when no records exist. |
-| R4 | Save records and unlocked achievements locally and restore them after restart. Preserve invalid save files for recovery, report load/write failures, and avoid overwriting valid data on failure. |
-| R5 | Implement five achievements: complete a first run, defeat a first enemy, defeat 20 enemies in one run, survive 60 active seconds in one run, and beat a previous run’s high score. Unlock each once per profile. |
-| R6 | Show achievement names, conditions, status, and unlock times. Queue new-unlock notifications without blocking gameplay, and list newly unlocked achievements in the game-over summary. |
-| R7 | Provide a records and achievements screen accessible from the main menu, with personal bests, rankings, achievement status, and return navigation. |
+| 3.1 | Save one record per completed run: unique run ID, score, enemies defeated, active play duration excluding pauses, and completion time. Ignore duplicate completion events. |
+| 3.2 | Track the highest score, most enemies defeated in one run, and longest survival time. Update only when a value exceeds the previous best. |
+| 3.3 | Show up to ten completed runs by descending score. Break ties by earlier completion time, then run ID. Show an empty state when no records exist. |
+| 3.4 | Save records and unlocked achievements locally and restore them after restart. Preserve invalid save files for recovery, report load/write failures, and avoid overwriting valid data on failure. |
+| 3.5 | Implement five achievements: complete a first run, defeat a first enemy, defeat 20 enemies in one run, survive 60 active seconds in one run, and beat a previous run’s high score. Unlock each once per profile. |
+| 3.6 | Show achievement names, conditions, status, and unlock times. Queue new-unlock notifications without blocking gameplay, and list newly unlocked achievements in the game-over summary. |
+| 3.7 | Build our records and achievements screen showing personal bests, rankings, and achievement status, with open/close hooks for integration. |
 
 Achievement thresholds will be checked against game difficulty. Each feature owner will test their module; integration checks will cover persistence, ranking ties, duplicate events, achievement thresholds, and navigation.
 
 ## 4. Dependencies on Other Teams
 
-| Team requirement | Needed collaboration |
+These are specific integration requests needed by our sub-requirements. Our team remains responsible only for the Records & Achievements System.
+
+| Our sub-requirement | Support needed from other teams |
 | --- | --- |
-| 7. Main Menu | Add an entry to our records and achievements screen and support return navigation. |
-| 8. Gameplay HUD | Provide an agreed area or interface for readable, non-blocking achievement notifications. |
-| 9. Player & Enemy Ship Variety | Report enemy defeats consistently across ship variants so each defeat is counted once. |
+| 3.7: Open the records screen | The team responsible for menu navigation connects a menu action to our screen’s open hook and handles return navigation. |
+| 3.6: Display unlock notifications | The team responsible for the gameplay interface provides a display hook or reserved area; our system supplies achievement notification content. |
+| 3.1 and 3.5: Count enemy defeats | The team modifying enemy behavior exposes consistent defeat events, allowing our system to count each defeat once and evaluate achievements. |
