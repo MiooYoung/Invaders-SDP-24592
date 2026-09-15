@@ -18,7 +18,6 @@ Register your team by adding one row to the table below and submitting the chang
 | 0 | [Instructors](teams/Instructors.md) | [Scott Uk-Jin Lee](https://github.com/scottukjinlee/scottukjinlee), [Seungho Kim](https://github.com/oh-gnues/oh-gnues), [Elkarmy Salma](https://github.com/salma5-cpu), [Eric Zhang](https://github.com/Eric-Zhang37) | [Course guidance](teams/Instructors.md#responsibilities) |
 | 1 | [Chinese can fly](https://github.com/wrxtzk/Invaders-SDP-24592) | [진혜청 (Leader)](https://github.com/clover0409), [위준걸](https://github.com/arjen12138), [담조곤](https://github.com/wrxtzk), [손첸디](https://github.com/sunchendi), [하함준](https://github.com/Godovo666), [허린호](https://github.com/woshi777), [양천시](https://github.com/MiooYoung) | [Records & Achievements System](teams/Chinese_can_fly.md#2-team-requirements) |
 
-
 ## Screenshots
 
 | Title Screen | Game Screen | Score Screen |
