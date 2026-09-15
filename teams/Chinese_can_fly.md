@@ -1,6 +1,7 @@
 # Chinese can fly
 
-**Project:** 3. Records & Achievements System  
+**Project:** 3. Records & Achievements System
+
 **Course:** CSE2024 · Section 24592 · 2026 Semester 2
 
 ## 1. Team Introduction
