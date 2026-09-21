@@ -2,12 +2,18 @@ package engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import records.InMemoryRunRecordRepository;
+import records.RunRecord;
+import records.RunRecordFormatter;
+import records.RunRecordRepository;
+import records.RunSession;
 import screen.GameScreen;
 import screen.HighScoreScreen;
 import screen.ScoreScreen;
@@ -113,6 +119,8 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_7);
 		
 		GameState gameState;
+		RunRecordRepository runRecordRepository =
+				new InMemoryRunRecordRepository();
 
 		int returnCode = 1;
 		do {
@@ -129,6 +137,8 @@ public final class Core {
 				break;
 			case 2:
 				// Game & score.
+				RunSession runSession =
+						new RunSession(UUID.randomUUID().toString());
 				do {
 					// One extra live every few levels.
 					boolean bonusLife = gameState.getLevel()
@@ -137,7 +147,7 @@ public final class Core {
 					
 					currentScreen = new GameScreen(gameState,
 							gameSettings.get(gameState.getLevel() - 1),
-							bonusLife, width, height, FPS);
+							bonusLife, width, height, FPS, runSession);
 					LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 							+ " game screen at " + FPS + " fps.");
 					frame.setScreen(currentScreen);
@@ -153,6 +163,17 @@ public final class Core {
 
 				} while (gameState.getLivesRemaining() > 0
 						&& gameState.getLevel() <= NUM_LEVELS);
+
+				RunRecord completedRun = runSession.finish(
+						gameState.getScore(), gameState.getShipsDestroyed(),
+						System.currentTimeMillis());
+				if (runRecordRepository.add(completedRun))
+					LOGGER.info("Completed run recorded:"
+							+ System.getProperty("line.separator")
+							+ RunRecordFormatter.format(completedRun));
+				else
+					LOGGER.warning("Duplicate completion ignored for run "
+							+ completedRun.getRunId());
 
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " score screen at " + FPS + " fps, with a score of "

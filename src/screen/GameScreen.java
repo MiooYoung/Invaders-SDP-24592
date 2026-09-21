@@ -14,6 +14,7 @@ import entity.EnemyShip;
 import entity.EnemyShipFormation;
 import entity.Entity;
 import entity.Ship;
+import records.RunSession;
 
 /**
  * Implements the game screen, where the action happens.
@@ -70,6 +71,8 @@ public class GameScreen extends Screen {
 	private boolean levelFinished;
 	/** Checks if a bonus life is received. */
 	private boolean bonusLife;
+	/** Tracks active play time across every level in the current run. */
+	private RunSession runSession;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -90,10 +93,36 @@ public class GameScreen extends Screen {
 	public GameScreen(final GameState gameState,
 			final GameSettings gameSettings, final boolean bonusLife,
 			final int width, final int height, final int fps) {
+		this(gameState, gameSettings, bonusLife, width, height, fps, null);
+	}
+
+	/**
+	 * Constructor with active play timing for a complete game run.
+	 *
+	 * @param gameState
+	 *            Current game state.
+	 * @param gameSettings
+	 *            Current game settings.
+	 * @param bonusLife
+	 *            Checks if a bonus life is awarded this level.
+	 * @param width
+	 *            Screen width.
+	 * @param height
+	 *            Screen height.
+	 * @param fps
+	 *            Frames per second, frame rate at which the game is run.
+	 * @param runSession
+	 *            Session shared by all levels in the current run.
+	 */
+	public GameScreen(final GameState gameState,
+			final GameSettings gameSettings, final boolean bonusLife,
+			final int width, final int height, final int fps,
+			final RunSession runSession) {
 		super(width, height, fps);
 
 		this.gameSettings = gameSettings;
 		this.bonusLife = bonusLife;
+		this.runSession = runSession;
 		this.level = gameState.getLevel();
 		this.score = gameState.getScore();
 		this.lives = gameState.getLivesRemaining();
@@ -133,7 +162,12 @@ public class GameScreen extends Screen {
 	 * @return Next screen code.
 	 */
 	public final int run() {
-		super.run();
+		try {
+			super.run();
+		} finally {
+			if (this.runSession != null)
+				this.runSession.stopActiveSegment(System.nanoTime());
+		}
 
 		this.score += LIFE_SCORE * (this.lives - 1);
 		this.logger.info("Screen cleared with a score of " + this.score);
@@ -147,7 +181,12 @@ public class GameScreen extends Screen {
 	protected final void update() {
 		super.update();
 
-		if (this.inputDelay.checkFinished() && !this.levelFinished) {
+		boolean activePlay = this.inputDelay.checkFinished()
+				&& !this.levelFinished;
+		if (activePlay && this.runSession != null)
+			this.runSession.startActiveSegment(System.nanoTime());
+
+		if (activePlay) {
 
 			if (!this.ship.isDestroyed()) {
 				boolean moveRight = inputManager.isKeyDown(KeyEvent.VK_RIGHT)
@@ -201,6 +240,8 @@ public class GameScreen extends Screen {
 
 		if ((this.enemyShipFormation.isEmpty() || this.lives == 0)
 				&& !this.levelFinished) {
+			if (this.runSession != null)
+				this.runSession.stopActiveSegment(System.nanoTime());
 			this.levelFinished = true;
 			this.screenFinishedCooldown.reset();
 		}
