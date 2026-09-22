@@ -1,4 +1,4 @@
-# Frenchies – Main Menu Module
+# Frenchies
 
 ## Team Registration and Project Requirements
 
