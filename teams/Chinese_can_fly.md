@@ -10,7 +10,7 @@ We are a seven-member team developing a records and achievements system for Spac
 
 | Member | GitHub | Responsibility |
 | --- | --- | --- |
-| Chen Huiqing (Leader) | [clover0409](https://github.com/clover0409) | Team coordination, cross-team communication, and PR reviews. |
+| Chen Huiqing | [clover0409](https://github.com/clover0409) | Team coordination, cross-team communication, and PR reviews. |
 | Wei Junjie | [arjen12138](https://github.com/arjen12138) | Game-result capture and records data model. |
 | Tan Zhaokun | [wrxtzk](https://github.com/wrxtzk) | Local saving, loading, and data recovery. |
 | Sun Chendi | [sunchendi](https://github.com/sunchendi) | Personal bests and top-ten rankings. |
