@@ -22,7 +22,7 @@ We are a seven-member team developing a records and achievements system for Spac
 
 ## 2. Team Requirements
 
-Record completed games, maintain personal bests and rankings, save progress locally, and display achievements. The initial version supports one local single-player profile; online rankings, two-player records, and currency/item rewards are outside its scope.
+Record completed games, maintain personal bests and rankings, save progress locally, and display achievements. The extension adds a ghost of the player's best run, style achievements, and a per-stage run report built on the same records data. The system supports one local single-player profile; online rankings, two-player records, and currency/item rewards are outside its scope.
 
 ## 3. Detailed Requirements
 
@@ -37,8 +37,11 @@ The following are sub-requirements of **Project 3: Records & Achievements System
 | 3.5 | Implement five achievements: complete a first run, defeat a first enemy, defeat 20 enemies in one run, survive 60 active seconds in one run, and beat a previous run’s high score. Unlock each once per profile. |
 | 3.6 | Show achievement names, conditions, status, and unlock times. Queue new-unlock notifications without blocking gameplay, and list newly unlocked achievements in the game-over summary. |
 | 3.7 | Build our records and achievements screen showing personal bests, rankings, and achievement status, with open/close hooks for integration. |
+| 3.8 | Ghost run: sample the player ship's horizontal position and score every 100 ms of active play. When a completed run sets a new high score for its mode (Campaign or Infinite), save it as that mode's ghost. In later runs, draw the ghost as a non-interactive translucent ship and show the live score difference. A missing or invalid ghost file disables the ghost without affecting play or records. |
+| 3.9 | Add five style achievements: Sharpshooter (at least 80% accuracy with at least 20 shots in one cleared Campaign stage), Untouchable (clear a Campaign stage without losing a life), UFO Hunter (defeat the special ship), Long Haul (survive 120 active seconds in Infinite Mode), and the hidden Stage Pioneer (clear a Campaign stage for the first time), shown as "???" until unlocked. Page the achievements screen, and preserve achievement IDs unknown to the running version instead of treating the profile as invalid. |
+| 3.10 | After each run, show per-stage active time, accuracy, and enemies defeated, with comparisons against personal bests. Store the per-stage breakdown with the run record through a versioned profile migration that keeps existing records readable. |
 
-Achievement thresholds will be checked against game difficulty. Each feature owner will test their module; integration checks will cover persistence, ranking ties, duplicate events, achievement thresholds, and navigation.
+Design notes and acceptance details for 3.8–3.10 are in [Records extension design notes](../docs/records-extension-design.md). Achievement thresholds will be checked against game difficulty. Each feature owner will test their module; integration checks will cover persistence, ranking ties, duplicate events, achievement thresholds, and navigation.
 
 ## 4. Dependencies on Other Teams
 
@@ -47,5 +50,5 @@ These are specific integration requests needed by our sub-requirements. Our team
 | Our sub-requirement | Support needed from other teams |
 | --- | --- |
 | 3.7: Open the records screen | The team responsible for menu navigation connects a menu action to our screen’s open hook and handles return navigation. |
-| 3.6: Display unlock notifications | The team responsible for the gameplay interface provides a display hook or reserved area; our system supplies achievement notification content. |
-| 3.1 and 3.5: Count enemy defeats | The team modifying enemy behavior exposes consistent defeat events, allowing our system to count each defeat once and evaluate achievements. |
+| 3.6 and 3.8: Display unlock notifications and the ghost score difference | The team responsible for the gameplay interface provides a display hook or reserved area; our system supplies achievement notification and score-difference content. |
+| 3.1, 3.5, and 3.9: Count enemy defeats and stage clears | The teams modifying enemy behavior and level progression expose consistent defeat events (including whether the special ship was defeated) and stage-clear events, allowing our system to count each fact once and evaluate achievements. |
